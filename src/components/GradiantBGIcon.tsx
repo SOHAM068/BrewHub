@@ -10,7 +10,7 @@ interface GradiantBGColorProps {
     size: number;
 };
 
-const GradiantBGColor: React.FC<GradiantBGColorProps> = ({ name, color, size }) => {
+const GradiantBGIcon: React.FC<GradiantBGColorProps> = ({ name, color, size }) => {
     return (
         <View style={styles.container}>
             <LinearGradient
@@ -25,7 +25,7 @@ const GradiantBGColor: React.FC<GradiantBGColorProps> = ({ name, color, size }) 
     )
 }
 
-export default GradiantBGColor
+export default GradiantBGIcon
 
 const styles = StyleSheet.create({
     container: {

@@ -8,7 +8,7 @@ import BeansData from "../data/BeansData";
 export const useStore = create(
     persist((set, get) => ({
             CoffeeList: CoffeeData,
-            BeansList: BeansData,
+            BeanList: BeansData,
             Cart: [],
             Favorites: [],
             OrderHistory: [],
