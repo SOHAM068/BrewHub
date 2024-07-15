@@ -16,6 +16,15 @@ const CartScreen = ({navigation, route}:any) => {
   const decrementCartItemQuantity = useStore((state:any) => state.decrementCartItemQuantity);
   const addToOrderHistoryListFromCart = useStore((state:any) => state.addToOrderHistoryListFromCart);
 
+  const IncrementCartItemQuantityHandler = (id:string, size:string) => {
+    incrementCartItemQuantity(id, size);
+    calculateCartPrice();
+  }
+  const DecrementCartItemQuantityHandler = (id:string, size:string) => {
+    decrementCartItemQuantity(id, size);
+    calculateCartPrice();
+  }
+
   const tabBarHeight = useBottomTabBarHeight();
 
   // console.log("cartList", CartList.length)
@@ -35,7 +44,13 @@ const CartScreen = ({navigation, route}:any) => {
               {CartList.map((data:any) => (
                 <TouchableOpacity
                   key={data.id}
-                  onPress={() => {}}
+                  onPress={() => {
+                    navigation.push('Details', {
+                      id: data.id,
+                      index: data.index,
+                      type: data.type,
+                    })
+                  }}
                 >
                   <CartItem 
                     id={data.id}
@@ -45,8 +60,8 @@ const CartScreen = ({navigation, route}:any) => {
                     imagelink_square={data.imagelink_square}
                     type={data.type}
                     special_ingredient={data.special_ingredient}
-                    IncrementCartItemQuantityHandler={() => incrementCartItemQuantity(data)}
-                    DecrementCartItemQuantityHandler={() => decrementCartItemQuantity(data)}
+                    IncrementCartItemQuantityHandler={IncrementCartItemQuantityHandler}
+                    DecrementCartItemQuantityHandler={DecrementCartItemQuantityHandler}
                   />
                 </TouchableOpacity>
               ))}
@@ -57,7 +72,7 @@ const CartScreen = ({navigation, route}:any) => {
           <PaymentFooter 
             price={{price: CartPrice, currency: '$'}}
             buttonTitle='Checkout'
-            buttonPresshandler={() => {navigation.navigate('Payment')}} 
+            buttonPresshandler={() => {navigation.navigate('Payment', {amount : CartPrice})}} 
           />
         )
         : <></>}

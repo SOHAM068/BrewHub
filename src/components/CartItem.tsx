@@ -1,7 +1,8 @@
-import { Image, ImageProps, StyleSheet, Text, View } from 'react-native'
+import { Image, ImageProps, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { COLORS, FONTSIZE, FONTFAMILY, SPACING, BORDERRADIUS } from '../theme/theme'
 import LinearGradient from 'react-native-linear-gradient'
+import CustomIcons from './CustomIcons'
 
 interface CartItemProp {
     id: string,
@@ -29,39 +30,99 @@ const CartItem: React.FC<CartItemProp> = ({
     return (
         <View>
             {prices.length != 1 ?
-            <LinearGradient
-                colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
-                style={styles.CartItemLinearGradient}
-                start={{x:0, y:0}}
-                end = {{x:1, y:1}}
-            >
-                <View style={styles.CartItemRow}>
-                    <Image source={imagelink_square} style={styles.CartItemImage}/>
-                    <View style={styles.CartItemInfo}>
+                <LinearGradient
+                    colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
+                    style={styles.CartItemLinearGradient}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                >
+                    <View style={styles.CartItemRow}>
+                        <Image source={imagelink_square} style={styles.CartItemImage} />
+                        <View style={styles.CartItemInfo}>
+                            <View>
+                                <Text style={styles.CartItemTitle}>{name}</Text>
+                                <Text style={styles.CartItemSubtitle}>{special_ingredient}</Text>
+                            </View>
+                            <View style={styles.CartItemRoastedContainer}>
+                                <Text style={styles.CartItemRoastedText}>{roasted}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    {prices.map((data: any, index: any) => (
+                        <View key={index.toString()} style={styles.CartItemSizeRowContainer}>
+                            <View style={styles.CartItemSizeValueContainer}>
+                                <View style={styles.SizeBox}>
+                                    <Text style={[styles.SizeText, {
+                                        fontSize: type == 'Bean' ? FONTSIZE.size_12 : FONTSIZE.size_16
+                                    }]}>{data.size}</Text>
+                                </View>
+                                <Text style={styles.SizeCurrency}>{data.currency}
+                                    <Text style={styles.SizePrice}>{data.price}</Text>
+                                </Text>
+                            </View>
+                            <View style={styles.CartItemSizeValueContainer}>
+                                <TouchableOpacity
+                                    onPress={() => { DecrementCartItemQuantityHandler(id, data.size) }}
+                                    style={styles.CartItemIcon}
+                                >
+                                    <CustomIcons name='minus' color={COLORS.primaryWhiteHex} size={10} />
+                                </TouchableOpacity>
+                                <View style={styles.CartItemQuantityContainer}>
+                                    <Text style={styles.CartItemQuantityText}>{data.quantity}</Text>
+                                </View>
+                                <TouchableOpacity
+                                    onPress={() => { IncrementCartItemQuantityHandler(id, data.size) }}
+                                    style={styles.CartItemIcon}
+                                >
+                                    <CustomIcons name='add' color={COLORS.primaryWhiteHex} size={10} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    ))}
+                </LinearGradient> : <LinearGradient
+                    colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
+                    style={styles.CartItemSingleLinearGradient}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                >
+                    <View>
+                        <Image source={imagelink_square} style={styles.CartItemSingleImage} />
+                    </View>
+                    <View style={styles.CartItemSingleInfoContainer}>
                         <View>
                             <Text style={styles.CartItemTitle}>{name}</Text>
                             <Text style={styles.CartItemSubtitle}>{special_ingredient}</Text>
                         </View>
-                        <View style={styles.CartItemRoastedContainer}>
-                            <Text style={styles.CartItemRoastedText}>{roasted}</Text>
-                        </View>
-                    </View>
-                </View>
-                {prices.map((data:any, index:any) => (
-                    <View key={index.toString()} style={styles.CartItemSizeRowContainer}>
-                        <View style={styles.CartItemSizeValueContainer}>
+                        <View style={styles.CartItemSingleSizeValueContainer}>
                             <View style={styles.SizeBox}>
                                 <Text style={[styles.SizeText, {
                                     fontSize: type == 'Bean' ? FONTSIZE.size_12 : FONTSIZE.size_16
-                                }]}>{data.size}</Text>
+                                }]}>{prices[0].size}</Text>
                             </View>
-                            <Text style={styles.SizeCurrency}>{data.currency}
-                                <Text style={styles.SizePrice}>{data.price}</Text>
+                            <Text style={styles.SizeCurrency}>{prices[0].currency}<Text style={styles.SizePrice}>
+                                {prices[0].price}</Text>
                             </Text>
                         </View>
+                        <View style={styles.CartItemSizeValueContainer}>
+                            <TouchableOpacity
+                                onPress={() => { DecrementCartItemQuantityHandler(id, prices[0].size) }}
+                                style={styles.CartItemIcon}
+                            >
+                                <CustomIcons name='minus' color={COLORS.primaryWhiteHex} size={10} />
+                            </TouchableOpacity>
+                            <View style={styles.CartItemQuantityContainer}>
+                                <Text style={styles.CartItemQuantityText}>{prices[0].quantity}</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => { IncrementCartItemQuantityHandler(id, prices[0].size) }}
+                                style={styles.CartItemIcon}
+                            >
+                                <CustomIcons name='add' color={COLORS.primaryWhiteHex} size={10} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                ))}
-            </LinearGradient> : <></>}
+
+                </LinearGradient>}
         </View>
     )
 }
@@ -136,7 +197,7 @@ const styles = StyleSheet.create({
     },
     SizeText: {
         fontFamily: FONTFAMILY.poppins_medium,
-        color: COLORS.secondaryLightGreyHex,
+        color: COLORS.primaryWhiteHex,
     },
     SizeCurrency: {
         fontFamily: FONTFAMILY.poppins_semibold,
