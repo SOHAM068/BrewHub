@@ -138,6 +138,7 @@ const PaymentScreen = ({ navigation, route }: any) => {
 }
 
 export default PaymentScreen
+export {PaymentList}
 
 const styles = StyleSheet.create({
   ScreenContainer: {
