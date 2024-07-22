@@ -1,6 +1,7 @@
 package com.brewhub;
 
-import android.os.Bundle;
+import android.os.Bundle; // here
+import org.devio.rn.splashscreen.SplashScreen; // here
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
@@ -18,7 +19,8 @@ public class MainActivity extends ReactActivity {
   }
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(null);
+    SplashScreen.show(this);  // here
+    super.onCreate(savedInstanceState);
   }
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link
