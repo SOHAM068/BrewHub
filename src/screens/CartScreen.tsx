@@ -100,6 +100,6 @@ const styles = StyleSheet.create({
   },
   ListItemContainer: {
     paddingHorizontal: SPACING.space_20,
-    gap: SPACING.space_20,
+    gap: 21,
   },
 })
